@@ -23,5 +23,9 @@ for record in Bio.SeqIO.parse("rosalind_gc.txt", "fasta"):
         if nuc == "T":
             t += 1
             nucs += 1
-            
+    if ((g+c)/nucs) > gc_count:
+        id = record.id
+        gc_count = ((g+c)/nucs)
+        
+print(id\ngc_count)
             
