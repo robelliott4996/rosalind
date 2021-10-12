@@ -27,5 +27,5 @@ for record in Bio.SeqIO.parse("rosalind_gc.txt", "fasta"):
         id = record.id
         gc_count = ((g+c)/nucs)
         
-print(id\ngc_count)
+print(id\n gc_count)
             
