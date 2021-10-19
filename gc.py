@@ -4,7 +4,7 @@ import Bio.SeqIO
 id = ''
 gc_count = 0
 
-for record in Bio.SeqIO.parse("rosalind_gc.txt", "fasta"):
+for record in Bio.SeqIO.parse("rosalind_gc.txt", "fasta"): #only using Biopython for its fasta reading capability
     g = 0
     c = 0
     a = 0
