@@ -3,4 +3,7 @@
 
 
 def rna_to_aa():
-  
+  return {'UUU':'F', 'UUC':'F', 'UUA':'L', 'UUG':'L', 'UCU':'S', 'UCC':'S', 'UCA':'S', 'UCG':'S',}
+
+
+print(rna_to_aa())
