@@ -1,2 +1,2 @@
 # rosalind
-scripts for Rosalind project
+scripts for Rosalind project using Python
