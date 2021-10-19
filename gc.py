@@ -1,4 +1,4 @@
-#for DNA in Rosalind project in python
+# for DNA in Rosalind project in python
 import Bio.SeqIO
 
 id = ''
@@ -23,9 +23,8 @@ for record in Bio.SeqIO.parse("rosalind_gc.txt", "fasta"):
         if nuc == "T":
             t += 1
             nucs += 1
-    if ((g+c)/nucs) > gc_count:
+    if (((g + c) / nucs)*100) > gc_count:
         id = record.id
-        gc_count = ((g+c)/nucs)
-        
-print(id\n gc_count)
-            
+        gc_count = round((((g + c) / nucs)*100), 6) #need to make this have only 6 decimals
+
+print("{}\n{}".format(id, gc_count))
