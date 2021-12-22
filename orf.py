@@ -1,5 +1,5 @@
-# translating all possible open reading frames of a protein sequence.
-#given string, also compute the reverse complement.
+# translating all possible open reading frames of a protein sequence from a
+#given string, including the complement strand.
 def codons(seq,frame): #requires a provided sequence and the frame of interest
     n = len(seq)
     #print(n)
