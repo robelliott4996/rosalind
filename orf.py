@@ -32,7 +32,7 @@ try:
             if line.startswith('>'):
                 continue
             else:
-                seq = line
+                seq = line #only one fasta entry in this problem
 except IOError as err:
     print(err)
 rev_seq = ''
@@ -46,7 +46,11 @@ for nuc in seq:
     if nuc == 'A':
         rev_seq = rev_seq + 'T'
 print(seq)
-rev_seq = rev_seq[::-1]
+rev_seq = rev_seq[::-1] #inverts sequence to so that it's going in the right order
 print(rev_seq)
-for frame in range(3):
-    for i in range(len(seq)):
+
+for frm in range(1, 3):
+    codonlist = codons(seq, frm)
+    for thing in codonlist:
+        print(thing)
+
