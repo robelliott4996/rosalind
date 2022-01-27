@@ -44,6 +44,7 @@ def reverse_sequence(seq):
     rev_seq = rev_seq[::-1]  # inverts sequence to so that it's going in the right order
     return rev_seq
 def orftranslate(seq):
+    aadict = get_lookup()
     orflibrary = []  # list of translated orf
     for frm in range(1, 4): #range() is exlusive on the end, so it needed to be 4
         codonlist = codons(seq, frm) #populates codonlist with the codons of that frame
@@ -60,19 +61,18 @@ def orftranslate(seq):
                         currentorf.append(aadict[codon])
                 aaframe = "".join(currentorf)
                 orflibrary.append(aaframe)
+            if codonlist[n] == 'TAA' or codonlist[n] == 'TGA' or codonlist[n] == 'TAG': #i don't like this aspect.
+                #if there's a stop codon before a start codon it wont count? should be changed in problem
+                break
             else:
                 continue
     #for read in orflibrary:
         #print(read)
     return orflibrary
-for record in Bio.SeqIO.parse('rosalind_orf.txt', "fasta"):
+for record in Bio.SeqIO.parse('rosalind_orf_sample.txt', "fasta"):
     fileseq = record.seq
 
 rev_fileseq = reverse_sequence(fileseq)
-#print("reverse sequence", rev_fileseq)
-aadict = get_lookup()
-#orftranslate(fileseq)
-#orftranslate(rev_fileseq)
 final = orftranslate(fileseq)
 final.extend(orftranslate(rev_fileseq))
 for protein in set(final):
