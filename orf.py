@@ -25,6 +25,21 @@ def get_lookup():
     'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
     'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
     }
+def reverse_sequence(seq):
+    sequence = seq
+    rev_seq = ''
+    for nuc in seq:
+        if nuc == 'C':
+            rev_seq = rev_seq + 'G'
+        if nuc == 'G':
+            rev_seq = rev_seq + 'C'
+        if nuc == 'T':
+            rev_seq = rev_seq + 'A'
+        if nuc == 'A':
+            rev_seq = rev_seq + 'T'
+    rev_seq = rev_seq[::-1]  # inverts sequence to so that it's going in the right order
+    return rev_seq
+
 aadict = get_lookup()
 try:
     with open("rosalind_orf_sample.txt", 'r') as my_file:
@@ -35,22 +50,18 @@ try:
                 seq = line #only one fasta entry in this problem
 except IOError as err:
     print(err)
-rev_seq = ''
-for nuc in seq:
-    if nuc == 'C':
-        rev_seq = rev_seq + 'G'
-    if nuc == 'G':
-        rev_seq = rev_seq + 'C'
-    if nuc == 'T':
-        rev_seq = rev_seq + 'A'
-    if nuc == 'A':
-        rev_seq = rev_seq + 'T'
 print(seq)
-rev_seq = rev_seq[::-1] #inverts sequence to so that it's going in the right order
+
 print(rev_seq)
-
+orflibrary = [] #list of translated orf
 for frm in range(1, 3):
-    codonlist = codons(seq, frm)
-    for thing in codonlist:
-        print(thing)
-
+    codonlist = codons(seq, frm) #populates codonlist with the codons of that frame
+    output = ''
+    currentorf = []
+    for nuccodon in codonlist:
+        if nuccodon == 'ATG': #finds and starts at Start codon
+            currentorf.append(nuccodon)
+        elif len(currentorf >= 1):
+            currentorf.append(nuccodon)
+        else:
+            continue
