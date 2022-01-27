@@ -1,9 +1,9 @@
 # translating all possible open reading frames of a protein sequence from a
 #given string, including the complement strand.
-def codons(seq,frame): #requires a provided sequence and the frame of interest
-    n = len(seq)
+def codons(seq,frame): #requires a provided sequence and the frame of interest(frames being 1,2, or 3
+    n = len(seq) #gets length of the sequence
     #print(n)
-    for i in range(frame - 1, n - 2, 3):
+    for i in range(frame - 1, n - 2, 3): #starts at (frame of interest) - 1, ends at (n-2) to prevent dicodons, and steps every 3.
         yield seq[i:i+3]
 def get_lookup():
     # Obtained from https://stackoverflow.com/questions/19521905/translation-dna-to-protein
@@ -47,21 +47,26 @@ try:
             if line.startswith('>'):
                 continue
             else:
-                seq = line #only one fasta entry in this problem
+                fileseq = line #only one fasta entry in this problem
 except IOError as err:
     print(err)
-print(seq)
-
-print(rev_seq)
+print(fileseq)
+rev_fileseq = reverse_sequence(fileseq)
+print(rev_fileseq)
 orflibrary = [] #list of translated orf
 for frm in range(1, 3):
     codonlist = codons(seq, frm) #populates codonlist with the codons of that frame
-    output = ''
-    currentorf = []
-    for nuccodon in codonlist:
-        if nuccodon == 'ATG': #finds and starts at Start codon
-            currentorf.append(nuccodon)
-        elif len(currentorf >= 1):
-            currentorf.append(nuccodon)
+    for n in len(codonlist):
+        if codonlist[n] == 'ATG':
+            templist = codonlist[n:]
+            currentorf = []
+            for codon in templist:
+                currentorf.append(aadict[codon])
+            aaframe = "".join(currentorf)
+            orflibrary.append(aaframe)
         else:
             continue
+
+
+for read in orflibrary:
+    print(read)
