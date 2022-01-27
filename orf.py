@@ -56,20 +56,22 @@ def orftranslate(seq):
                 currentorf = []
                 for codon in templist:
                     if codon == 'TAA' or codon == 'TGA' or codon == 'TAG':
+                        currentorf.append(aadict[codon])
                         break
                     else:
                         currentorf.append(aadict[codon])
-                aaframe = "".join(currentorf)
-                orflibrary.append(aaframe)
-            if codonlist[n] == 'TAA' or codonlist[n] == 'TGA' or codonlist[n] == 'TAG': #i don't like this aspect.
-                #if there's a stop codon before a start codon it wont count? should be changed in problem
-                break
+                if ('*' in currentorf) == False: #needs to have a stop codon in the provided string to be valid
+                    break
+                else:
+
+                    aaframe = "".join(currentorf[:-1:])
+                    orflibrary.append(aaframe)
             else:
                 continue
     #for read in orflibrary:
         #print(read)
     return orflibrary
-for record in Bio.SeqIO.parse('rosalind_orf_sample.txt', "fasta"):
+for record in Bio.SeqIO.parse('rosalind_orf.txt', "fasta"):
     fileseq = record.seq
 
 rev_fileseq = reverse_sequence(fileseq)
