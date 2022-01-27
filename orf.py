@@ -3,8 +3,11 @@
 def codons(seq,frame): #requires a provided sequence and the frame of interest(frames being 1,2, or 3
     n = len(seq) #gets length of the sequence
     #print(n)
+    cdns = []
     for i in range(frame - 1, n - 2, 3): #starts at (frame of interest) - 1, ends at (n-2) to prevent dicodons, and steps every 3.
-        yield seq[i:i+3]
+        cdns.append(seq[i:i+3])
+        #yield seq[i:i+3] #yields in specific and returns a generator object. Changed because it got rough after this
+    return cdns
 def get_lookup():
     # Obtained from https://stackoverflow.com/questions/19521905/translation-dna-to-protein
     return {
@@ -39,8 +42,28 @@ def reverse_sequence(seq):
             rev_seq = rev_seq + 'T'
     rev_seq = rev_seq[::-1]  # inverts sequence to so that it's going in the right order
     return rev_seq
+def orftranslate(seq):
+    orflibrary = []  # list of translated orf
+    for frm in range(1, 3):
+        codonlist = codons(seq, frm) #populates codonlist with the codons of that frame
+        #print(codonlist)
+        for n in range(len(codonlist)):
+            if codonlist[n] == 'ATG':
+                templist = codonlist[n:]
+                #print(templist)
+                currentorf = []
+                for codon in templist:
+                    if codon == 'TAA' or codon == 'TGA' or codon == 'TAG':
+                        break
+                    else:
+                        currentorf.append(aadict[codon])
+                aaframe = "".join(currentorf)
+                orflibrary.append(aaframe)
 
-aadict = get_lookup()
+            else:
+                continue
+    for read in orflibrary:
+        print(read)
 try:
     with open("rosalind_orf_sample.txt", 'r') as my_file:
         for line in my_file:
@@ -50,23 +73,9 @@ try:
                 fileseq = line #only one fasta entry in this problem
 except IOError as err:
     print(err)
-print(fileseq)
+#print(fileseq)
 rev_fileseq = reverse_sequence(fileseq)
-print(rev_fileseq)
-orflibrary = [] #list of translated orf
-for frm in range(1, 3):
-    codonlist = codons(seq, frm) #populates codonlist with the codons of that frame
-    for n in len(codonlist):
-        if codonlist[n] == 'ATG':
-            templist = codonlist[n:]
-            currentorf = []
-            for codon in templist:
-                currentorf.append(aadict[codon])
-            aaframe = "".join(currentorf)
-            orflibrary.append(aaframe)
-        else:
-            continue
-
-
-for read in orflibrary:
-    print(read)
+#print("reverse sequence", rev_fileseq)
+aadict = get_lookup()
+orftranslate(fileseq)
+orftranslate(rev_fileseq)
