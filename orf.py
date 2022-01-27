@@ -1,3 +1,4 @@
+import Bio.SeqIO
 # translating all possible open reading frames of a protein sequence from a
 #given string, including the complement strand.
 def codons(seq,frame): #requires a provided sequence and the frame of interest(frames being 1,2, or 3
@@ -44,7 +45,7 @@ def reverse_sequence(seq):
     return rev_seq
 def orftranslate(seq):
     orflibrary = []  # list of translated orf
-    for frm in range(1, 3):
+    for frm in range(1, 4): #range() is exlusive on the end, so it needed to be 4
         codonlist = codons(seq, frm) #populates codonlist with the codons of that frame
         #print(codonlist)
         for n in range(len(codonlist)):
@@ -59,23 +60,20 @@ def orftranslate(seq):
                         currentorf.append(aadict[codon])
                 aaframe = "".join(currentorf)
                 orflibrary.append(aaframe)
+            else:
+                continue
+    #for read in orflibrary:
+        #print(read)
+    return orflibrary
+for record in Bio.SeqIO.parse('rosalind_orf.txt', "fasta"):
+    fileseq = record.seq
 
-            else:
-                continue
-    for read in orflibrary:
-        print(read)
-try:
-    with open("rosalind_orf_sample.txt", 'r') as my_file:
-        for line in my_file:
-            if line.startswith('>'):
-                continue
-            else:
-                fileseq = line #only one fasta entry in this problem
-except IOError as err:
-    print(err)
-#print(fileseq)
 rev_fileseq = reverse_sequence(fileseq)
 #print("reverse sequence", rev_fileseq)
 aadict = get_lookup()
-orftranslate(fileseq)
-orftranslate(rev_fileseq)
+#orftranslate(fileseq)
+#orftranslate(rev_fileseq)
+final = orftranslate(fileseq)
+final.extend(orftranslate(rev_fileseq))
+for protein in set(final):
+    print(protein)
