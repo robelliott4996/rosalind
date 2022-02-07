@@ -1,6 +1,7 @@
 #mendelien inheritance and probability
 #Probability two random organisms mate and produce individual
 #with a dominant allele
+#would be better to create a punnet square calculator for population simulation I think
 try:
     with open("rosalind_iprb.txt", "r") as my_file:
         lines = my_file.readlines()
