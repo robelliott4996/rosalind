@@ -1,0 +1,1 @@
+#finding the longest shared motiff in a collection of strings.
